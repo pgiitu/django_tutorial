@@ -22,6 +22,8 @@ def vote(request, poll_id):
         selected_choice = p.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
         # Redisplay the poll voting form.
+        if request.is_ajax():
+            return HttpResponse("0")
         return render_to_response('polls/poll_detail.html', {
             'object': p,
             'error_message': "You didn't select a choice.",
@@ -29,6 +31,8 @@ def vote(request, poll_id):
     else:
         selected_choice.votes += 1
         selected_choice.save()
+        if request.is_ajax():
+            return HttpResponse("1")
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
