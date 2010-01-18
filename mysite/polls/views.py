@@ -22,8 +22,8 @@ def vote(request, poll_id):
         selected_choice = p.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
         # Redisplay the poll voting form.
-        return render_to_response('polls/detail.html', {
-            'poll': p,
+        return render_to_response('polls/poll_detail.html', {
+            'object': p,
             'error_message': "You didn't select a choice.",
         })
     else:
